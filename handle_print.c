@@ -5,7 +5,7 @@
  * @list: A variable argument list containing the argument ti be printed..
  * @ind: A pointer to tge current index of 'fmt'.
  * @buffer: Buffer array to handle print.
- * @flags: A set of active flags that determine how the output should be formatted.
+ * @flags: A set of active flags that determine formatted output.
  * @width: The width of the output.
  * @precision: Precision  of the output.
  * @size: Size of the output.

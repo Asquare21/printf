@@ -108,3 +108,69 @@ If no matching format specifier is found, the function checks if the current cha
 Finally, if no matching format specifier was found and no character was printed, the function returns `-1` to indicate an error.
 
 
+*get_precision.c*
+
+I define a function called `get_precision` which takes in three arguments: a const char pointer `format`, an integer pointer `i`, and a variable argument list `list` of type `va_list`. 
+
+The purpose of this function is to calculate and return the precision for printing, which is specified in the format string. 
+
+Here's a breakdown of what each line of code does:
+
+- `#include "main.h"`: This line includes the header file "main.h" which contains declarations of functions, variables, and other things needed by the code.
+
+- `int get_precision(const char *format, int *i, va_list list)`: This line defines the `get_precision` function, which takes in a const char pointer `format`, an integer pointer `i`, and a variable argument list `list` of type `va_list`, and returns an integer value representing the precision.
+
+- `int curr_i = *i + 1;`: This line initializes an integer variable `curr_i` to the value of `i` dereferenced and incremented by 1.
+
+- `int precision = -1;`: This line initializes an integer variable `precision` to -1.
+
+- `if (format[curr_i] != '.') return (precision);`: This line checks if the character in `format` at position `curr_i` is not a '.', and if so, returns `precision` (which is still -1). This means that if there is no precision specified in the format string, the function returns -1.
+
+- `precision = 0;`: This line sets `precision` to 0, indicating that a precision has been specified in the format string.
+
+- `for (curr_i += 1; format[curr_i] != '\0'; curr_i++)`: This line starts a loop that iterates through the characters in `format` starting from the next character after the '.', and continues until the end of the string is reached.
+
+- `if (is_digit(format[curr_i]))`: This line checks if the character in `format` at position `curr_i` is a digit.
+
+- `precision *= 10; precision += format[curr_i] - '0';`: This line multiplies `precision` by 10 and adds the integer value of the current digit to it.
+
+- `else if (format[curr_i] == '*')`: This line checks if the character in `format` at position `curr_i` is a '*', which indicates that the precision should be taken from the next argument in the variable argument list.
+
+- `curr_i++; precision = va_arg(list, int); break;`: This line increments `curr_i` by 1, gets the next integer argument from `list`, and assigns it to `precision`. The `break` statement exits the loop since the precision has been found.
+
+- `else break;`: This line breaks out of the loop if the character in `format` at position `curr_i` is neither a digit nor a '*'.
+
+- `*i = curr_i - 1;`: This line updates the value of `i` to `curr_i` minus 1, so that the calling function knows which character in `format` was the last one used.
+
+- `return (precision);`: This line returns the calculated precision value. If no precision was found in the format string, this value will be -1.
+
+*get_size.c*
+
+
+I define a function called `get_size` that takes in two parameters - a pointer to a character string called `format` and a pointer to an integer called `i`. The function returns an integer value which represents the size to cast the argument.
+
+The first line `#include "main.h"` includes the header file "main.h" which likely contains necessary function prototypes and/or macro definitions.
+
+The next few lines are comments that provide some documentation on the purpose and usage of the `get_size` function. The comments describe the parameters and return value of the function.
+
+The function definition starts with `int get_size(const char *format, int *i)` which defines the function name and its parameters. The `const char *format` parameter is a pointer to a constant character string that contains the formatted string to be printed. The `int *i` parameter is a pointer to an integer that represents the current position of the argument list.
+
+The function then declares two integer variables - `curr_i` and `size`. `curr_i` is initialized to the current position of the argument list plus one, while `size` is initialized to 0.
+
+The code then checks if the character at `format[curr_i]` is 'l' or 'h' using an `if` statement. If it is 'l', `size` is assigned the value of a macro constant `S_LONG` (likely defined elsewhere in the code). If it is 'h', `size` is assigned the value of a macro constant `S_SHORT`. If neither of these conditions are met, `size` remains 0.
+
+Finally, the code updates the value of `i` to `curr_i` if `size` is not equal to 0, and returns the value of `size`. If `size` is equal to 0, `i` is updated to `curr_i - 1`.
+
+*get_width.c*
+
+
+I define a function named `get_width` that takes three arguments: a `const char*` named `format`, an `int*` named `i`, and a `va_list` named `list`. The function returns an integer value.
+
+The function calculates the width for printing based on the given format string. It starts by initializing a variable named `curr_i` to the value of the pointer `i` incremented by 1 and a variable named `width` to 0.
+
+The function then iterates through the `format` string starting from the index `curr_i`. For each character in the string, it checks if the character is a digit using the `is_digit` function. If it is a digit, the function updates the `width` variable by multiplying it by 10 and adding the value of the current digit to it. If the character is a `*`, the function increments `curr_i`, reads the next argument from the `list` using the `va_arg` macro, assigns it to the `width` variable, and breaks out of the loop. Otherwise, if the character is not a digit or a `*`, the loop breaks.
+
+Finally, the function assigns the value of `curr_i - 1` to `i` and returns the value of `width`.
+
+The function assumes that the `is_digit` function is defined elsewhere in the program and correctly determines whether a given character is a digit. The function also assumes that the `va_arg` macro correctly reads the next argument of the given type from the `va_list`.
+
